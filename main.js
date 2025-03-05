@@ -1,32 +1,29 @@
 const fs = require('node:fs')
+const afs = require('node:fs/promises')
 const path = require('node:path')
 const readline = require('node:readline/promises')
 
 
- // fs.open('gmail.txt', 'w');
+const start = async () => {
+    const sourceFilePath = path.join(process.cwd(), 'emails.txt')
+    const targetFilePath = path.join(process.cwd(), 'gmails.txt')
 
-// const readStream = fs.createReadStream('emails.txt');
-// const writeStream = fs.createWriteStream('gmail.txt');
-//
-// const rl = readline.createInterface({
-//     input: readStream
-// })
-// rl.on('line',(line)=>{
-//     if (line.includes('gmail.com')){
-//         writeStream.write(line+'\n')
-//     }
-// })
-// rl.on('close',()=>{
-//     writeStream.end()
-// })
+    const fileStream = fs.createReadStream(sourceFilePath, 'utf-8');
+    const rl = readline.createInterface({input: fileStream});
 
-fs.readFile('gmail.txt',{encoding:"utf-8"},(err,data)=>{
-    if(err) throw err
-    const fileOnlyGmail = data
-        .split('\n')
-        .map(line=>line.split(/\s+/).pop())
-        .join('\n');
-    fs.writeFile('onlyGmail.txt',fileOnlyGmail,(err)=>{
-        if(err) throw err
-    })
-})
+    try {
+        for await (const line of rl) {
+            // console.log(line.split()); //робимо лог і бачимо що у нас табуляція а не пробіли тому наступний рядок->
+            const email = line.split('\t').splice(-1)[0]; // сплітуємо по табуляції, забираємо останній елемент 0 індекс
+            const domainName = email.split('@').splice(-1)[0]; // оскільки та скрізь є @ то сплітуємо щераз по @, беремо другу частину splice(-1) 0 елемент
+
+            if (domainName === 'gmail.com') {  // якщо над домен дорівнює емаіл
+                await afs.appendFile(targetFilePath, `${email}\n`) // то записуємо в наш таргетФайл
+            }
+        }
+    } finally {
+        await rl.close()
+    }
+}
+
+start()
