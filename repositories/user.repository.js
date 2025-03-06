@@ -20,6 +20,11 @@ class UserRepository {
         await write(users)  // записуємо юзерів
         return newUser  //і повертаємо оновлений список юзерів
     }
+    async getById(id){
+        const users = await read();  // дістаємо всіх юзерів
+        const index = users.findIndex(user => user.id === Number(id)); // зіертаємось до усіх наших юзерів до їх індексів і порівнюємойого айдішку з нашою айдішкою   (Number(id) - кастомізація так як йдішка приходить як стрінга)
+        return users[index] // і повертаємо нашого юзера по індексу далі йдемо до юзер сервісу
+    }
 }
 
 const userRepository = new UserRepository();

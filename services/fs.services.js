@@ -2,7 +2,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 
 // створюємо змінну для нашого шляху до файлу
-const filePath = path.join(process.cwd(), 'db', 'users.jsone')
+const filePath = path.join(process.cwd(), 'db', 'users.json')
 
 
 // створюємо функцію для читання

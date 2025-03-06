@@ -47,10 +47,22 @@ app.use(express.urlencoded({extended:true}))
 //     res.end('hello from delete')
 // })
 
-//для створкння    // оскыльки працюэмо з асинхронныстю то ы колбек асинхронний
+//для створення    // оскыльки працюэмо з асинхронныстю то ы колбек асинхронний
 app.post('/users', async (req,res)=>{
     const user = req.body  // оскільки користувач повинен нам надіслати узера то ми звертаємось до req та його body
     const data = await userService.create(user) // далі звертаємось до юзер сервіса кріейт та передаємо юзера, у відповідь ми отримаємо нового юзера/data якого нам треба віддати у відповідь
+    res.json(data)
+})
+//щоб отримати всіх користувачів
+app.get('/users', async (req, res)=>{
+    const data = await userService.getAll();
+    res.json(data)
+})
+
+// щоб дістати когось по айдішці
+app.get('/users/:id', async (req, res)=>{
+    const id = req.params.id;  // в репозиторії метод
+    const data = await userService.getById(id);
     res.json(data)
 })
 
