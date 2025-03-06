@@ -1,51 +1,26 @@
-// console.log('Hello from NodeJs');
-//
-// require('./services/test')
-// const {a, myFunc} = require('./services/test')
-// console.log(a);
-// myFunc()
+const express = require('express');
+const {userService} = require("./services/user.service");
 
+const app = express();
 
-///////////////////////////////////////////////////////
-// http
-//////////////////////////////////////////////////////
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
-// const http = require('node:http')
-//
-// const server = http.createServer((req, res)=>{
-//     res.writeHead(200,{'Content-Type':'application/json'})
-//
-//     if(req.url === '/cars'){
-//         switch (req.method){
-//             case 'GET':
-//                 return res.end(JSON.stringify({
-//                     data:'my cars'
-//                 }))
-//             case 'POST':
-//                 return res.end(JSON.stringify({
-//                     data: 'Want to create car'
-//                 }))
-//         }
-//     }
-// })
-// server.listen(5555)
+app.get('/users', async (req, res)=>{
+    const data = await userService.getAll();
+    res.json(data)
+})
+app.get('/users/:id', async (req, res)=>{
+    const id = req.params.id;
+    const data = await userService.getById(id);
+    res.json(data)
+})
+app.post('/users', async (req, res)=>{
+    const user = req.body;
+    const data = await userService.create(user);
+    res.json(data)
+})
 
-///////////////////////////////////////////////////////
-// path
-//////////////////////////////////////////////////////
-
-// const path = require('node:path');
-//
-// const filePath = path.join(process.cwd(),'services','test.js')
-// console.log(filePath);
-//
-// console.log(path.basename(filePath));
-// console.log(path.dirname(filePath));
-// console.log(path.extname(filePath));
-// console.log(path.parse(filePath));
-// console.log(path.normalize('\\\\Users\\\\User\\\\///IdeaProjects\\\\nodeJs\\\\services\''));
-
-
-///////////////////////////////////////////////////////
-// readline
-//////////////////////////////////////////////////////
+app.listen(5000, ()=>{
+    console.log('server running on 5000 port');
+})
