@@ -1,51 +1,69 @@
-// console.log('Hello from NodeJs');
-//
-// require('./services/test')
-// const {a, myFunc} = require('./services/test')
-// console.log(a);
-// myFunc()
+const express = require('express');
+const {userService} = require("./services/user.service"); // підключаємо бібліоеку
 
 
-///////////////////////////////////////////////////////
-// http
-//////////////////////////////////////////////////////
+const app = express()  // створюємо екземпляр нашого експресу,прийнято називати арр - те що буде запускатись
 
-// const http = require('node:http')
-//
-// const server = http.createServer((req, res)=>{
-//     res.writeHead(200,{'Content-Type':'application/json'})
-//
-//     if(req.url === '/cars'){
-//         switch (req.method){
-//             case 'GET':
-//                 return res.end(JSON.stringify({
-//                     data:'my cars'
-//                 }))
-//             case 'POST':
-//                 return res.end(JSON.stringify({
-//                     data: 'Want to create car'
-//                 }))
-//         }
-//     }
+app.use(express.json())
+// налаштування арр - е метод use який каже express використовуй join - це означає що коли будемо посилати джейсонку,
+// а джейсонка це стрінга то тепер арр зможе преобразовати в звичайний js об'єкт, отже ми зі стрічки будемо одразу отримувати об'єкти (не потрібно буде робити JSONE.parse)
+app.use(express.urlencoded({extended:true}))
+//допомагає використовувати запити від клієнтів
+
+// // зі сторони бекенду методом гет ми віддаємо
+// // :name - динамічний складова урли (це не тільки name) (path params - параметри шляху)
+// app.get('/users/:name', (req,res)=>{
+//     console.log(req.body)
+//     res.end("hello from post")
+//     // console.log(req.params.name);  // через реквкст його парамс ми можемо дістати найм, в даному випадку просто логаємо
+//     // console.log(req.query); // так дістаємо квері парамс (необов'язкові параметри для пошуку ті що пишуться через ? а далі data=1111&name=Olha)
 // })
-// server.listen(5555)
-
-///////////////////////////////////////////////////////
-// path
-//////////////////////////////////////////////////////
-
-// const path = require('node:path');
 //
-// const filePath = path.join(process.cwd(),'services','test.js')
-// console.log(filePath);
+// // беремо арр далі метод(передаємо шлях а через кому передаємо йому колбек)
+// // першим параметром завжди реквест req - це те що нам посилає клієнт
+// // другим йде респонс res - те чим ми відповідаємо користовачу
 //
-// console.log(path.basename(filePath));
-// console.log(path.dirname(filePath));
-// console.log(path.extname(filePath));
-// console.log(path.parse(filePath));
-// console.log(path.normalize('\\\\Users\\\\User\\\\///IdeaProjects\\\\nodeJs\\\\services\''));
+// // методом пост клієнт амагається щось записати до беку
+// app.post('/users',(req, res)=>{
+//     console.log(req.body)
+//     res.end('hello from post')
+// })
+//
+//
+// // для того щоб оновити якийсь об'єкт повністю
+// app.put('/users', (req, res)=>{
+//     console.log(req.body)
+//     res.end('hello from put')
+// })
+//
+// // часткове оновлення (можемо оновити ім'я, рік ......)
+// app.patch('/users',(req, res)=>{
+//     console.log(req.body)
+//     res.end('hello from patch')
+// })  // в патч за допомогою req його методу body ми можемо отримати інформацію
+//
+// // видалення якоїсь сутності
+// app.delete('/users',(req,res)=>{
+//     res.end('hello from delete')
+// })
+
+//для створкння    // оскыльки працюэмо з асинхронныстю то ы колбек асинхронний
+app.post('/users', async (req,res)=>{
+    const user = req.body  // оскільки користувач повинен нам надіслати узера то ми звертаємось до req та його body
+    const data = await userService.create(user) // далі звертаємось до юзер сервіса кріейт та передаємо юзера, у відповідь ми отримаємо нового юзера/data якого нам треба віддати у відповідь
+    res.json(data)
+})
 
 
-///////////////////////////////////////////////////////
-// readline
-//////////////////////////////////////////////////////
+app.listen(5000, ()=>{
+    console.log('server running on 5000 port');
+})
+//запуск аплікації - викликаємо арр у нього є метод listen (порт довільний від 3000 до 33000 через кому передаємо колбек)
+// в колбеці передали повідомлення
+
+
+// CRUD  //створення читання всіх читання по айді апдейт по айді делейте по айді
+// Create
+// Read/Retrive
+// Update
+// Delete/destroy
