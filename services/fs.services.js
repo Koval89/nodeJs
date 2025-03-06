@@ -18,7 +18,7 @@ const read = async () => {
 // створюємо функцію для запису
 const write = async (users)=>{ // async (приймає масив юзерів)
     try {
-        await fs.writeFile(filePath, JSON.stringify(users))  // звертаємось до fs методу writeFile (записуємо його по тому самому шляху filePath, і вкладаємо в нього JSON.stringify(users))
+        await fs.writeFile(filePath, JSON.stringify(users, null,2))  // звертаємось до fs методу writeFile (записуємо його по тому самому шляху filePath, і вкладаємо в нього JSON.stringify(users))   null тф 2 прописуємо щоб красиво запис був у юзерах ітакше все буде в один рядок
     }catch (e){
         console.log('Error', e.message);
     }
