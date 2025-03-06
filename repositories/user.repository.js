@@ -22,6 +22,19 @@ class UserRepository {
         const index = users.findIndex(user => user.id === Number(id));
         return users[index]
     }
+    async update(user,id){
+        const users = await read();
+        const index = users.findIndex(user => user.id === Number(id));
+        const newUser ={
+            id:user.id===index,
+            name: user.name,
+            surname: user.surname,
+            age: user.age
+        }
+        users.push(newUser)
+        await write(users)
+        return newUser
+    }
 }
 
 const userRepository = new UserRepository();

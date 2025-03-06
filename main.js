@@ -21,6 +21,12 @@ app.post('/users', async (req, res)=>{
     res.json(data)
 })
 
+app.put('users/:id', async (req,res)=>{
+    const id =req.params.id
+    const data = await userService.update(id)
+    res.json(data)
+})
+
 app.listen(5000, ()=>{
     console.log('server running on 5000 port');
 })

@@ -13,5 +13,18 @@
     "id": 3,
     "name": "Olha",
     "age": "25"
+  },
+  {
+    "id": 4,
+    "name": "Buratino",
+    "age": "170"
+  },
+  {
+    "id": 5,
+    "name": "Buratino",
+    "age": "170"
+  },
+  {
+    "id": 6
   }
 ]
