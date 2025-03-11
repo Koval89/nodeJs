@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "rimraf dist && tsc-watch --onSuccess \"npm run watch:server\"",
-    "watch:server": "ts-node src/main.ts --watch"
+    "watch:server": "ts-node srs/main.ts --watch"
   },
   "dependencies": {
     "express": "^4.21.2",

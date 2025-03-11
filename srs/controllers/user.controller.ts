@@ -6,6 +6,7 @@ import {StatusCodesEnum} from "../enums/status-codes.enum";
 class UserController {
     public async getAll(req: Request, res: Response) {
         const data = await userService.getAll();
+        //коли відправляємо респонс то перше що прописуємо це статус код а потім вже джейсон
         res.status(StatusCodesEnum.OK).json(data)
     }
 
