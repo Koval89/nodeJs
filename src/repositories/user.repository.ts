@@ -15,7 +15,7 @@ class UserRepository {
         return User.findById(userId)
     }
     public updateById (userId:string, user:IUserDTO):Promise<IUser>{
-        return User.findByIdAndUpdate(userId,user,{new:true})
+        return User.findByIdAndUpdate(userId,user,{new:true})  // {new:true} про
     }
     public deleteById(userId:string):Promise<IUser>{
         return User.findByIdAndDelete(userId)
