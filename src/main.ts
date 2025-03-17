@@ -1,6 +1,7 @@
 import express from "express"
 import mongoose from "mongoose"
 import {apiRouter} from "./routes/api.router";
+import {config} from "./configs/config";
 
 const app = express()
 app.use(express.json())
@@ -14,7 +15,7 @@ const dbConnection = async ()=>{
     while (!dbCon){
         try {
             console.log('Connecting to DB.....')
-            await mongoose.connect()
+            await mongoose.connect(config.MONGO_URI)
             dbCon=true
             console.log('Database available!!!')
         }catch (e){
@@ -27,8 +28,8 @@ const dbConnection = async ()=>{
 const start = async ()=>{
     try{
         await dbConnection()
-        app.listen(5000,()=>{
-            console.log('Server listening on 5000 port')
+        app.listen(config.PORT,()=>{
+            console.log(`Server listening on ${config.PORT} port`)
         })
     }catch (e){
         console.log(e)

@@ -14,6 +14,13 @@ class UserRepository {
     public getById(userId: string): Promise<IUser> {
         return User.findById(userId)
     }
+    public updateById (userId:string, user:IUserDTO):Promise<IUser>{
+        return User.findByIdAndUpdate(userId,user,{new:true})
+    }
+    public deleteById(userId:string):Promise<IUser>{
+        return User.findByIdAndDelete(userId)
+    }
+
 }
 
 export const userRepository = new UserRepository()
